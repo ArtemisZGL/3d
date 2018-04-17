@@ -11,12 +11,9 @@ namespace Disk.factory
 
     public class DiskFactory : MonoBehaviour
     {
-
-        public GameObject first_disk;
-
         private List<DiskData> used = new List<DiskData>();
         private List<DiskData> free = new List<DiskData>();
-
+        public GameObject first_disk;
         private void Awake()
         {
             first_disk = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/disk"), Vector3.zero, Quaternion.identity);
@@ -112,11 +109,11 @@ namespace Disk.factory
         public void FreeDisk(GameObject disk)
         {
             DiskData target = null;
-            foreach (DiskData i in used)
+           for(int i = 0; i < used.Count; i++)
             {
-                if (disk.GetInstanceID() == i.gameObject.GetInstanceID())
+                if (disk.GetInstanceID() == used[i].gameObject.GetInstanceID())
                 {
-                    target = i;
+                    target = used[i];
                 }
             }
             if (target != null)

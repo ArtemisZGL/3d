@@ -1,15 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using Disk.factory;
 using Disk.controller;
 
 
 namespace Disk.action
 {
-   
-
     public class SSAction : ScriptableObject
     {
 
@@ -118,7 +115,7 @@ namespace Disk.action
 
         public FirstSceneControl sceneController;
         public int disk_number = 0;
-
+        
         protected new void Start()
         {
             sceneController = (FirstSceneControl)Director.getInstance().currentSceneController;
@@ -143,9 +140,7 @@ namespace Disk.action
         public void loadAction(Queue<GameObject> diskQueue)
         {
             foreach (GameObject disk in diskQueue)
-            {  
                 RunAction(disk, ScriptableObject.CreateInstance<CCFlyAction>(), (ISSActionCallback)this);
-            }
         }
     }
 
@@ -157,11 +152,8 @@ namespace Disk.action
     public class CCFlyAction : SSAction
     {
         float g;
-
         float begin_speed;
-
         Vector3 direction; //斜方向的运动方向,只需要是一个单位向量就可以了
-
         float time;
 
         public override void Start()
@@ -170,9 +162,7 @@ namespace Disk.action
             g = 9.8F;
             time = 0;
             int index = System.Math.Abs(gameobject.GetComponent<DiskData>().score);
-
             float random_y = UnityEngine.Random.Range(-2F, 5F);
-
             begin_speed = index * 1.5F + 2;
             direction = new Vector3(-1, 1, 0);
             Vector3 position = new Vector3(4, random_y, 0);
@@ -185,11 +175,8 @@ namespace Disk.action
             if (gameobject.activeSelf)
             {
                 time += Time.deltaTime;
-
                 transform.Translate(Vector3.down * g * time * Time.deltaTime); //重力的减速
-
                 transform.Translate(direction * begin_speed * Time.deltaTime); //初速度，包括竖直和水平的运动
-
                 if (this.transform.position.y < -4)
                 {
                     this.destroy = true;

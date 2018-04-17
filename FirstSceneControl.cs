@@ -24,7 +24,7 @@ namespace Disk.controller
     public class Director : System.Object
     {
 
-        public ISceneControl currentSceneController { get; set; }
+        public ISceneControl currentSceneController ;
 
         private static Director director;
 
@@ -45,29 +45,15 @@ namespace Disk.controller
 
     public class FirstSceneControl : MonoBehaviour, ISceneControl, IUserAction
     {
-
-
-        public CCActionManager ac_manager { get; set; }
-
-
-        public ScoreRecorder score_recorder { get; set; }
-
-
+        public CCActionManager ac_manager;
+        public ScoreRecorder score_recorder;
         public Queue<GameObject> disks = new Queue<GameObject>();
-
         private int disk_number;
-
         private int current_round = -1;
-
-
         public int round = 4;
-
         private float time = 0;     //计时
         private float roundtime = 0;    //每个回合隔多久飞一次飞碟
-
-
         private GameState gameState = GameState.START;
-
         UserGUI user_gui;
 
         void Awake()
@@ -103,8 +89,6 @@ namespace Disk.controller
 
                     gameState = GameState.ROUND_FINISH;
                 }
-
-               
                 if (ac_manager.disk_number == 0 && gameState == GameState.ROUND_START)
                 {
                     current_round++;
@@ -114,7 +98,6 @@ namespace Disk.controller
                     
                     gameState = GameState.RUNNING;
                 }
-
                 if (time > roundtime)
                 {
                     show_disk();
@@ -134,58 +117,20 @@ namespace Disk.controller
         {
             DiskFactory df = Singleton<DiskFactory>.Instance;
             for (int i = 0; i < ac_manager.disk_number; i++)
-            {
-                disks.Enqueue(df.GetDisk(current_round));
-            }
-
+                 disks.Enqueue(df.GetDisk(current_round));
             ac_manager.loadAction(disks);
-
         }
 
         void show_disk()
         {
             if (disks.Count != 0)
-            {
-                GameObject disk = disks.Dequeue();
-                disk.SetActive(true);
-            }
-
+                disks.Dequeue().SetActive(true);
         }
 
         public void LoadResources()
         {
-            
-            GameObject greensward = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/bg"));
+          GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/bg"));
         }
-
-
-     
-
-        public int get_score()
-        {
-            return score_recorder.score;
-        }
-
-        public void reset_score()
-        {
-            score_recorder.Reset();
-        }
-
-        public GameState get_state()
-        {
-            return gameState;
-        }
-
-        public void set_state(GameState state)
-        {
-            gameState = state;
-        }
-
-        public int get_round()
-        {
-            return current_round;
-        }
-
         public void click(Vector3 pos)
         {
             Ray ray = Camera.main.ScreenPointToRay(pos);
@@ -204,6 +149,32 @@ namespace Disk.controller
                 }
 
             }
+        }
+
+        public int get_score()
+        {
+            return score_recorder.score;
+        }
+        
+        public GameState get_state()
+        {
+            return gameState;
+        }
+        
+        public void reset_score()
+        {
+            score_recorder.Reset();
+        }
+
+        public int get_round()
+        {
+            return current_round;
+        }
+
+
+        public void set_state(GameState state)
+        {
+            gameState = state;
         }
     }
 }

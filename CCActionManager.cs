@@ -177,7 +177,7 @@ namespace Disk.action
                 time += Time.deltaTime;
                 transform.Translate(Vector3.down * g * time * Time.deltaTime); //重力的减速
                 transform.Translate(direction * begin_speed * Time.deltaTime); //初速度，包括竖直和水平的运动
-                if (this.transform.position.y < -4)
+                if (this.transform.position.y < -5)
                 {
                     this.destroy = true;
                     this.enable = false;
